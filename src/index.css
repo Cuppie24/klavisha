@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --accent: #00c47a;
+  --accent-hover: #00a866;
+  --accent-light: rgba(0, 196, 122, 0.09);
+  --accent-rgb: 0, 196, 122;
+
+  --text: #6b7280;
+  --text-h: #111827;
+  --text-muted: #9ca3af;
+
+  --bg: #f5f5f4;
+  --bg-card: #ffffff;
+  --bg-elevated: #f9f9f8;
+  --bg-input: #f3f4f6;
+
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.16);
+  --border-accent: rgba(0, 196, 122, 0.3);
+
+  --discount: #dc2626;
+  --green: #16a34a;
+  --star: #00c47a;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --glow-accent: 0 0 24px rgba(184, 134, 11, 0.25);
+
+  --sans: 'Inter', system-ui, sans-serif;
+  --radius: 14px;
+  --radius-sm: 8px;
+
+  font: 16px/1.5 var(--sans);
+  letter-spacing: -0.01em;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+#root {
+  width: 100%;
+  text-align: left;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--sans);
+  font-weight: 700;
+  color: var(--text-h);
+  margin: 0;
+}
+
+p { margin: 0; }
+a { text-decoration: none; color: inherit; }
+button { font-family: var(--sans); cursor: pointer; }
