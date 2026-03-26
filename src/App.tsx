@@ -5,12 +5,13 @@ import { BubbleButton } from './components/BubbleButton';
 import './App.css';
 
 const CATEGORY_ICONS: Record<string, string> = {
-  'Все':        '⌨️',
-  'Клавиатуры': '🖮',
-  'Кастом':     '🔩',
-  'Кейкапы':    '🎨',
-  'Свитчи':     '🔘',
-  'Аксессуары': '🧰',
+  'Все':                    '⌨️',
+  'Компактные клавиатуры':  '💻',
+  'Клавиатуры':             '🖮',
+  'Кастом':                 '🔩',
+  'Кейкапы':                '🎨',
+  'Свитчи':                 '🔘',
+  'Аксессуары':             '🧰',
 };
 
 function SearchIcon() {

@@ -607,28 +607,25 @@
   font: 500 13px var(--sans);
   white-space: nowrap;
   transition: border-color 0.15s, color 0.15s, background 0.15s, box-shadow 0.15s;
+}
 
-  &:hover {
-    border-color: var(--border-accent);
-    color: var(--accent);
-    background: var(--accent-light);
-  }
+.category-btn:hover {
+  border-color: var(--border-accent);
+  color: var(--accent);
+  background: var(--accent-light);
+}
 
-  &--active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-    font-weight: 700;
-    box-shadow:
-      0 0 0 2px rgba(var(--accent-rgb), 0.35),
-      0 4px 20px rgba(var(--accent-rgb), 0.45);
+.category-btn--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
 
-    &:hover {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
-      color: #fff;
-    }
-  }
+.category-btn--active:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #fff;
 }
 
 .category-btn__icon {
