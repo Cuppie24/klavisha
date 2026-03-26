@@ -83,10 +83,10 @@ export function BubbleButton({ children, onClick }: BubbleButtonProps) {
       bgTweenRef.current?.kill();
       circleTweenRef.current?.kill();
 
-      // Показываем фон с elastic-растяжкой как в оригинале
+      // Показываем фон с теми же отступами что в оригинале (0.1 и 1.2, делённые на timeScale 2.6)
       const bgTl = gsap.timeline();
-      bgTl.to(effectBg, { duration: 0.8 / 2.6, scaleY: 1.1, yPercent: -50, ease: 'power2.out' });
-      bgTl.to(effectBg, { duration: 1.8 / 2.6, scale: 1, yPercent: -50, ease: 'elastic.out(1.2, 0.4)' });
+      bgTl.to(effectBg, { duration: 0.8 / 2.6, scaleY: 1.1, yPercent: -50, ease: 'power2.out' }, 0.1 / 2.6);
+      bgTl.to(effectBg, { duration: 1.8 / 2.6, scale: 1,    yPercent: -50, ease: 'elastic.out(1.2, 0.4)' }, 1.2 / 2.6);
       bgTweenRef.current = bgTl;
 
       btTl.restart();
