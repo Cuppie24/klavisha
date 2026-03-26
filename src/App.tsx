@@ -123,7 +123,7 @@ function App() {
         </div>
       </header>
 
-      {/* ─── Hero ────────────────────────────────────────────── */}
+      {/* ─── Hero ────────────────────────────────────────────── */}г
       <section className="hero">
         <div className="hero__glow hero__glow--purple" aria-hidden="true" />
         <div className="hero__glow hero__glow--gold" aria-hidden="true" />
@@ -140,8 +140,8 @@ function App() {
               <span className="hero__title-accent">нового уровня</span>
             </h1>
             <p className="hero__subtitle">
-              Кастомные клавиатуры, кейкапы и свитчи от ведущих<br />
-              мировых производителей. Сборка под ваш стиль.
+              Клавиатуры, кейкапы и свитчи от ведущих мировых производителей. <br />
+              Кастомные сборки под ваш стиль.
             </p>
             <div className="hero__cta">
               <button

@@ -34,13 +34,13 @@ function HeartIcon() {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { name, description, price, originalPrice, gradient, rating, reviews, inStock, tag } = product;
+  const { name, description, price, originalPrice, rating, reviews, inStock, tag } = product;
   const discount = originalPrice ? discountPercent(price, originalPrice) : null;
 
   return (
     <article className="product-card">
       <div className="product-card__image-wrap">
-        <div className="product-card__gradient" style={{ background: gradient }} />
+        <div className="product-card__gradient" />
 
         {tag === 'hot' && (
           <span className="product-card__badge-hot">
