@@ -79,11 +79,12 @@ export function BubbleButton({ children, onClick }: BubbleButtonProps) {
       idleTl.pause();
       gsap.to(container, { duration: 0.15, x: 0, overwrite: 'auto', ease: 'power2.out' });
 
-      // Убиваем только свои standalone-твины, не трогаем btTl
       bgTweenRef.current?.kill();
       circleTweenRef.current?.kill();
 
-      // Показываем фон с теми же отступами что в оригинале (0.1 и 1.2, делённые на timeScale 2.6)
+      // Включаем hue-цикл до появления фона — нет зелёного на старте
+      container.classList.add('bubble-btn--active');
+
       const bgTl = gsap.timeline();
       bgTl.to(effectBg, { duration: 0.8 / 2.6, scaleY: 1.1, yPercent: -50, ease: 'power2.out' }, 0.1 / 2.6);
       bgTl.to(effectBg, { duration: 1.8 / 2.6, scale: 1,    yPercent: -50, ease: 'elastic.out(1.2, 0.4)' }, 1.2 / 2.6);
@@ -95,18 +96,17 @@ export function BubbleButton({ children, onClick }: BubbleButtonProps) {
     const onLeave = () => {
       btTl.pause();
 
-      // Убиваем standalone-твины
       bgTweenRef.current?.kill();
       circleTweenRef.current?.kill();
 
-      // Быстро убираем кружки из текущей позиции
       circleTweenRef.current = gsap.to(allCircles, {
         duration: 0.12, scale: 0, opacity: 0, x: 0, y: 0, ease: 'power2.in',
       });
 
-      // Прячем фон
+      // Выключаем hue-цикл только после исчезновения фона — нет зелёного на конце
       bgTweenRef.current = gsap.to(effectBg, {
         duration: 0.18, scaleY: 0, yPercent: -50, ease: 'power2.inOut',
+        onComplete: () => container.classList.remove('bubble-btn--active'),
       });
 
       idleTl.resume();

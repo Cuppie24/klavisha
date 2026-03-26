@@ -471,13 +471,13 @@
   display: inline-block;
 }
 
-.bubble-btn:hover {
+.bubble-btn--active {
   animation: hue-cycle 10s linear infinite;
 }
 
 @keyframes hue-cycle {
-  from { filter: hue-rotate(0deg); }
-  to   { filter: hue-rotate(360deg); }
+  from { filter: hue-rotate(180deg); }
+  to   { filter: hue-rotate(540deg); }
 }
 
 .bubble-btn__trigger {
