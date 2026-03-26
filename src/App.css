@@ -366,6 +366,11 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+.hero__cta .bubble-btn {
+  margin-left: 16px;
 }
 
 .hero__stats {
@@ -482,12 +487,17 @@
   align-items: center;
   height: 48px;
   padding: 0 28px;
-  background: none;
-  color: #fff;
-  border: none;
+  background: transparent;
+  color: var(--text-h);
+  border: 1.5px solid var(--border-hover);
   border-radius: 12px;
   font: 600 15px var(--sans);
   cursor: pointer;
+}
+
+.bubble-btn:hover .bubble-btn__trigger {
+  color: #fff;
+  border-color: transparent;
 }
 
 .bubble-btn__trigger:active {
@@ -517,6 +527,7 @@
   z-index: 1;
   background: var(--accent);
   border-radius: 10px;
+  transform: translateY(-50%);
 }
 
 /* Кружки */

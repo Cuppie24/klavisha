@@ -10,10 +10,11 @@ interface BubbleButtonProps {
 }
 
 export function BubbleButton({ children, onClick }: BubbleButtonProps) {
-  const containerRef   = useRef<HTMLSpanElement>(null);
-  const btTlRef        = useRef<gsap.core.Timeline | null>(null);
-  const idleTlRef      = useRef<gsap.core.Timeline | null>(null);
-  const leaveTweenRef  = useRef<gsap.core.Tween | null>(null);
+  const containerRef     = useRef<HTMLSpanElement>(null);
+  const btTlRef          = useRef<gsap.core.Timeline | null>(null);
+  const idleTlRef        = useRef<gsap.core.Timeline | null>(null);
+  const bgTweenRef       = useRef<gsap.core.Animation | null>(null);
+  const circleTweenRef   = useRef<gsap.core.Tween | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -24,9 +25,11 @@ export function BubbleButton({ children, onClick }: BubbleButtonProps) {
     const effectBg  = container.querySelector<HTMLElement>('.beffect-bg');
     if (!effectBg) return;
 
-    // ── Начальное состояние: фон и кружки всегда видны ────────
-    gsap.set(effectBg, { scaleY: 1, yPercent: -50 });
-    gsap.set([circlesTL, circlesBR], { scale: 1, opacity: 1 });
+    const allCircles = [...Array.from(circlesTL), ...Array.from(circlesBR)];
+
+    // ── Начальное состояние ────────────────────────────────────
+    gsap.set(effectBg,   { scaleY: 0, yPercent: -50 });
+    gsap.set(allCircles, { scale: 0, opacity: 0 });
 
     // ── Top-left timeline ──────────────────────────────────────
     const tl = gsap.timeline();
@@ -40,7 +43,6 @@ export function BubbleButton({ children, onClick }: BubbleButtonProps) {
     tl.to(circlesTL[2], { duration: 1, scale: 0, x: '-=15', y: '+=5',  opacity: 0 }, '-=1');
 
     const tlBt1 = gsap.timeline();
-    tlBt1.set(circlesTL, { scale: 1, x: 0, y: 0, opacity: 1, rotation: -45 });
     tlBt1.add(tl);
 
     // ── Bottom-right timeline ──────────────────────────────────
@@ -55,19 +57,16 @@ export function BubbleButton({ children, onClick }: BubbleButtonProps) {
     tl2.to(circlesBR[2], { duration: 1, scale: 0, x: '+=15', y: '-=5',  opacity: 0 }, '-=1');
 
     const tlBt2 = gsap.timeline();
-    tlBt2.set(circlesBR, { scale: 1, x: 0, y: 0, opacity: 1, rotation: 45 });
     tlBt2.add(tl2);
 
-    // ── Master hover timeline ──────────────────────────────────
+    // ── Мастер-тайминлайн (только кружки) ─────────────────────
     const btTl = gsap.timeline({ paused: true });
     btTl.add(tlBt1);
-    btTl.to(effectBg, { duration: 0.8, scaleY: 1.1, yPercent: -50 }, 0.1);
     btTl.add(tlBt2, 0.2);
-    btTl.to(effectBg, { duration: 1.8, scale: 1, yPercent: -50, ease: 'elastic.out(1.2, 0.4)' }, 1.2);
     btTl.timeScale(2.6);
     btTlRef.current = btTl;
 
-    // ── Idle — плавное покачивание раз в 8 секунд ─────────────
+    // ── Idle ───────────────────────────────────────────────────
     const idleTl = gsap.timeline({ repeat: -1, repeatDelay: 8 });
     idleTl.to(container, { duration: 0.18, x: -2.5, ease: 'sine.inOut' });
     idleTl.to(container, { duration: 0.18, x:  2.5, ease: 'sine.inOut' });
@@ -75,29 +74,41 @@ export function BubbleButton({ children, onClick }: BubbleButtonProps) {
     idleTl.to(container, { duration: 0.55, x:  0,   ease: 'power2.out' });
     idleTlRef.current = idleTl;
 
-    const allCircles = [...Array.from(circlesTL), ...Array.from(circlesBR)];
-
     // ── События ────────────────────────────────────────────────
     const onEnter = () => {
       idleTl.pause();
-      // Убиваем только leave-твин, НЕ трогаем твины внутри btTl
-      leaveTweenRef.current?.kill();
-      leaveTweenRef.current = null;
       gsap.to(container, { duration: 0.15, x: 0, overwrite: 'auto', ease: 'power2.out' });
+
+      // Убиваем только свои standalone-твины, не трогаем btTl
+      bgTweenRef.current?.kill();
+      circleTweenRef.current?.kill();
+
+      // Показываем фон с elastic-растяжкой как в оригинале
+      const bgTl = gsap.timeline();
+      bgTl.to(effectBg, { duration: 0.8 / 2.6, scaleY: 1.1, yPercent: -50, ease: 'power2.out' });
+      bgTl.to(effectBg, { duration: 1.8 / 2.6, scale: 1, yPercent: -50, ease: 'elastic.out(1.2, 0.4)' });
+      bgTweenRef.current = bgTl;
+
       btTl.restart();
     };
 
     const onLeave = () => {
       btTl.pause();
-      // Снапим кружки в исходную точку
-      gsap.set(allCircles, { x: 0, y: 0 });
-      // Плавно возвращаем фон (сохраняем твин чтобы убить при повторном ховере)
-      leaveTweenRef.current = gsap.to(effectBg, {
-        duration: 0.35,
-        scaleY: 1,
-        yPercent: -50,
-        ease: 'power2.out',
+
+      // Убиваем standalone-твины
+      bgTweenRef.current?.kill();
+      circleTweenRef.current?.kill();
+
+      // Быстро убираем кружки из текущей позиции
+      circleTweenRef.current = gsap.to(allCircles, {
+        duration: 0.12, scale: 0, opacity: 0, x: 0, y: 0, ease: 'power2.in',
       });
+
+      // Прячем фон
+      bgTweenRef.current = gsap.to(effectBg, {
+        duration: 0.18, scaleY: 0, yPercent: -50, ease: 'power2.inOut',
+      });
+
       idleTl.resume();
     };
 
@@ -107,6 +118,8 @@ export function BubbleButton({ children, onClick }: BubbleButtonProps) {
     return () => {
       btTl.kill();
       idleTl.kill();
+      bgTweenRef.current?.kill();
+      circleTweenRef.current?.kill();
       container.removeEventListener('mouseenter', onEnter);
       container.removeEventListener('mouseleave', onLeave);
     };
