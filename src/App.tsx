@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Phone, ShoppingCart } from 'lucide-react';
 import logoImg from './assets/klavisha.jpg';
 import keyboardImg from './assets/keyboard.png';
@@ -43,46 +43,6 @@ function App() {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [favOpen, setFavOpen] = useState(false);
   const [cart, setCart] = useState<number[]>([]);
-  const [kbGlow, setKbGlow] = useState(false);
-  const kbImgRef = useRef<HTMLImageElement>(null);
-  const kbCanvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const img = kbImgRef.current;
-    if (!img) return;
-
-    const buildCanvas = () => {
-      const c = document.createElement('canvas');
-      c.width = img.naturalWidth;
-      c.height = img.naturalHeight;
-      c.getContext('2d')?.drawImage(img, 0, 0);
-      kbCanvasRef.current = c;
-    };
-
-    if (img.complete) buildCanvas();
-    else img.addEventListener('load', buildCanvas, { once: true });
-
-    const container = img.parentElement!;
-
-    const onMove = (e: MouseEvent) => {
-      const canvas = kbCanvasRef.current;
-      if (!canvas) return;
-      const rect = img.getBoundingClientRect();
-      const x = Math.floor((e.clientX - rect.left) * (img.naturalWidth / rect.width));
-      const y = Math.floor((e.clientY - rect.top) * (img.naturalHeight / rect.height));
-      if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) { setKbGlow(false); return; }
-      const alpha = canvas.getContext('2d')!.getImageData(x, y, 1, 1).data[3];
-      setKbGlow(alpha > 10);
-    };
-
-    const onLeave = () => setKbGlow(false);
-    container.addEventListener('mousemove', onMove);
-    container.addEventListener('mouseleave', onLeave);
-    return () => {
-      container.removeEventListener('mousemove', onMove);
-      container.removeEventListener('mouseleave', onLeave);
-    };
-  }, []);
 
   const toggleCart = (id: number) => {
     setCart(prev =>
@@ -228,14 +188,8 @@ function App() {
           </div>
         </div>
 
-        <div className="hero__keyboard" aria-hidden="true" onContextMenu={(e) => e.preventDefault()}>
-          <img
-            ref={kbImgRef}
-            src={keyboardImg}
-            alt=""
-            draggable={false}
-            className={kbGlow ? 'kb-glow' : ''}
-          />
+        <div className="hero__keyboard" aria-hidden="true">
+          <img src={keyboardImg} alt="" />
         </div>
 
       </section>
@@ -355,7 +309,7 @@ function App() {
           </div>
         </div>
         <div className="footer__bottom">
-          <p>© 2025 Klavisha.uz — Все права защищены</p>
+          <p>© 2026 Klavisha.uz — Все права защищены</p>
           <div className="footer__bottom-links">
             <span>Конфиденциальность</span>
             <span>Оферта</span>

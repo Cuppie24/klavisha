@@ -32,7 +32,7 @@ export interface Product {
   tag?: 'new' | 'hot' | 'sale' | 'custom';
 }
 
-export const CATEGORIES = ['Все', 'Компактные клавиатуры', 'Клавиатуры', 'Кастом', 'Кейкапы', 'Свитчи', 'Аксессуары'] as const;
+export const CATEGORIES = ['Все', 'Компактные клавиатуры', 'Полноразмерные клавиатуры', 'Кастом', 'Кейкапы', 'Свитчи', 'Аксессуары'] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 export const products: Product[] = [
