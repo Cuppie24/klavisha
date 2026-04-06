@@ -345,31 +345,27 @@
 .hero--centered {
   padding-right: max(24px, calc((100vw - 1400px) / 2 + 40px));
   justify-content: center;
-
-  .hero__inner {
-    max-width: 760px;
-    padding-right: 0;
-    text-align: center;
-    align-items: center;
-  }
-
-  .hero__content {
-    align-items: center;
-  }
-
-  .hero__subtitle {
-    text-align: center;
-  }
-
-  .hero__cta {
-    justify-content: center;
-  }
-
-  .hero__stats {
-    justify-content: center;
-  }
-
-  @media (max-width: 1024px) {
+}
+.hero--centered .hero__inner {
+  max-width: 760px;
+  padding-right: 0;
+  text-align: center;
+  align-items: center;
+}
+.hero--centered .hero__content {
+  align-items: center;
+}
+.hero--centered .hero__subtitle {
+  text-align: center;
+}
+.hero--centered .hero__cta {
+  justify-content: center;
+}
+.hero--centered .hero__stats {
+  justify-content: center;
+}
+@media (max-width: 1024px) {
+  .hero--centered {
     align-items: center;
   }
 }
