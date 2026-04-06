@@ -355,6 +355,7 @@
 
   .hero__content {
     align-items: center;
+    text-align: center;
   }
 
   .hero__cta {
