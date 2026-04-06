@@ -1144,6 +1144,10 @@
   &:hover { color: var(--accent); }
 }
 
+.footer__col span {
+  cursor: pointer;
+}
+
 .footer__bottom {
   display: flex;
   align-items: center;
@@ -1165,6 +1169,7 @@
   display: flex;
   gap: 20px;
 
+  span { cursor: pointer; }
   a:hover { color: var(--text); }
 }
 
