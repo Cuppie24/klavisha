@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Phone, ShoppingCart } from 'lucide-react';
 import logoImg from './assets/klavisha.jpg';
 import keyboardImg from './assets/keyboard.png';
@@ -10,8 +10,8 @@ import './App.css';
 const CATEGORY_ICONS: Record<string, string> = {
   'Все':                    '⌨️',
   'Компактные клавиатуры':  '💻',
-  'Клавиатуры':             '🖮',
-  'Кастом':                 '🔩',
+  'Полноразмерные клавиатуры': '⌨️',
+  'Кастом':                 '🔥',
   'Кейкапы':                '🎨',
   'Свитчи':                 '🔘',
   'Аксессуары':             '🧰',
@@ -63,6 +63,35 @@ function App() {
   };
 
   const favoriteProducts = products.filter(p => favorites.includes(p.id));
+
+  const [kbHover, setKbHover] = useState(false);
+  const kbCanvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const canvas = document.createElement('canvas');
+    const img = new Image();
+    img.src = keyboardImg;
+    img.onload = () => {
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      canvas.getContext('2d')?.drawImage(img, 0, 0);
+      kbCanvasRef.current = canvas;
+    };
+  }, []);
+
+  const handleKbMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const canvas = kbCanvasRef.current;
+    const imgEl = e.currentTarget.querySelector('img');
+    if (!canvas || !imgEl) return;
+    const rect = imgEl.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    if (x < 0 || y < 0 || x > rect.width || y > rect.height) { setKbHover(false); return; }
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const pixel = canvas.getContext('2d')?.getImageData(Math.floor(x * scaleX), Math.floor(y * scaleY), 1, 1).data;
+    setKbHover(!!pixel && pixel[3] > 10);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -188,8 +217,13 @@ function App() {
           </div>
         </div>
 
-        <div className="hero__keyboard" aria-hidden="true">
-          <img src={keyboardImg} alt="" />
+        <div
+          className="hero__keyboard"
+          aria-hidden="true"
+          onMouseMove={handleKbMouseMove}
+          onMouseLeave={() => setKbHover(false)}
+        >
+          <img src={keyboardImg} alt="" className={kbHover ? 'kb-glow' : ''} />
         </div>
 
       </section>
