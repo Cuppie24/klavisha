@@ -1,3 +1,23 @@
+import imgAK820White       from '../products/AJAZZ AK820 (White Edition).png';
+import imgAK820Black       from '../products/AJAZZ AK820 (Black Edition).png';
+import imgAK820CS2         from '../products/AJAZZ AK820 (CS2 Edition).png';
+import imgAK820CSBW        from '../products/AJAZZ AK820 (CS Black-White Edition).png';
+import imgAK820Jett        from '../products/AJAZZ AK820 (Jett Edition).png';
+import imgAK820Reyna       from '../products/AJAZZ AK820 (Reyna Edition).png';
+import imgAK820Cyberpunk   from '../products/AJAZZ AK820 (Cyberpunk Edition).png';
+import imgAK820Earth       from '../products/AJAZZ AK820 (Earth Edition).png';
+import imgAK820WhiteWave   from '../products/AJAZZ AK820 (White wave Edition).png';
+import imgAK820BlackWave   from '../products/AJAZZ AK820 (Black wave Edition).png';
+import imgAK820Japan       from '../products/AJAZZ AK820 (Japan Edition).png';
+import imgAK820Nippon      from '../products/AJAZZ AK820 (Nippon Edition).png';
+import imgAK820Levi        from '../products/AJAZZ AK820 (Levi Edition).png';
+import imgWOMIERWhite      from '../products/WOMIER S-K80 (KANAGAWA White edition).png';
+import imgWOMIERBlack      from '../products/WOMIER S-K80 (KANAGAWA Black edition).png';
+import imgDAGK             from '../products/DAGK K87 PRO (Matcha edition).png';
+import imgYK75             from '../products/YK75 Низкопрофильный.png';
+import imgXINMENG          from '../products/XINMENG M87 LITE.png';
+import imgAULA             from '../products/AULA Wolf Spider WIN60.png';
+
 export interface Product {
   id: number;
   name: string;
@@ -5,7 +25,7 @@ export interface Product {
   price: number;
   originalPrice?: number;
   category: string;
-  gradient: string;
+  image: string;
   rating: number;
   reviews: number;
   inStock: boolean;
@@ -23,7 +43,7 @@ export const products: Product[] = [
     price: 510000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820White,
     rating: 4.8,
     reviews: 142,
     inStock: true,
@@ -36,7 +56,7 @@ export const products: Product[] = [
     price: 510000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820Black,
     rating: 4.8,
     reviews: 138,
     inStock: true,
@@ -49,7 +69,7 @@ export const products: Product[] = [
     price: 845000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820CS2,
     rating: 4.7,
     reviews: 64,
     inStock: true,
@@ -62,7 +82,7 @@ export const products: Product[] = [
     price: 810000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820CSBW,
     rating: 4.7,
     reviews: 51,
     inStock: true,
@@ -75,7 +95,7 @@ export const products: Product[] = [
     price: 720000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820Jett,
     rating: 4.7,
     reviews: 39,
     inStock: true,
@@ -88,7 +108,7 @@ export const products: Product[] = [
     price: 720000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820Reyna,
     rating: 4.7,
     reviews: 33,
     inStock: true,
@@ -101,7 +121,7 @@ export const products: Product[] = [
     price: 810000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820Cyberpunk,
     rating: 4.8,
     reviews: 47,
     inStock: true,
@@ -114,7 +134,7 @@ export const products: Product[] = [
     price: 810000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820Earth,
     rating: 4.6,
     reviews: 28,
     inStock: true,
@@ -127,7 +147,7 @@ export const products: Product[] = [
     price: 810000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820WhiteWave,
     rating: 4.7,
     reviews: 22,
     inStock: true,
@@ -140,7 +160,7 @@ export const products: Product[] = [
     price: 810000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820BlackWave,
     rating: 4.7,
     reviews: 19,
     inStock: true,
@@ -153,7 +173,7 @@ export const products: Product[] = [
     price: 810000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820Japan,
     rating: 4.8,
     reviews: 31,
     inStock: true,
@@ -166,7 +186,7 @@ export const products: Product[] = [
     price: 810000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820Nippon,
     rating: 4.8,
     reviews: 26,
     inStock: true,
@@ -179,7 +199,7 @@ export const products: Product[] = [
     price: 810000,
     originalPrice: 1500000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAK820Levi,
     rating: 4.8,
     reviews: 18,
     inStock: true,
@@ -192,7 +212,7 @@ export const products: Product[] = [
     price: 990000,
     originalPrice: 1190000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgWOMIERWhite,
     rating: 4.9,
     reviews: 57,
     inStock: true,
@@ -205,7 +225,7 @@ export const products: Product[] = [
     price: 990000,
     originalPrice: 1190000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgWOMIERBlack,
     rating: 4.9,
     reviews: 49,
     inStock: true,
@@ -218,7 +238,7 @@ export const products: Product[] = [
     price: 590000,
     originalPrice: 1200000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgDAGK,
     rating: 4.6,
     reviews: 83,
     inStock: true,
@@ -231,7 +251,7 @@ export const products: Product[] = [
     price: 720000,
     originalPrice: 1800000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgYK75,
     rating: 4.7,
     reviews: 44,
     inStock: true,
@@ -244,7 +264,7 @@ export const products: Product[] = [
     price: 600000,
     originalPrice: 1300000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgXINMENG,
     rating: 4.5,
     reviews: 61,
     inStock: true,
@@ -257,7 +277,7 @@ export const products: Product[] = [
     price: 550000,
     originalPrice: 1200000,
     category: 'Компактные клавиатуры',
-    gradient: '',
+    image: imgAULA,
     rating: 4.6,
     reviews: 35,
     inStock: true,

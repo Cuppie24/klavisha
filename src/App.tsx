@@ -1,4 +1,7 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { Phone, ShoppingCart } from 'lucide-react';
+import logoImg from './assets/klavisha.jpg';
+import keyboardImg from './assets/keyboard.png';
 import { products, CATEGORIES, type Category } from './data/products';
 import { ProductCard } from './components/ProductCard';
 import { BubbleButton } from './components/BubbleButton';
@@ -23,15 +26,6 @@ function SearchIcon() {
   );
 }
 
-function CartIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" width={size} height={size} aria-hidden="true">
-      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M16 10a4 4 0 01-8 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 function HeartIcon() {
   return (
@@ -41,18 +35,74 @@ function HeartIcon() {
   );
 }
 
-function PhoneIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" width="14" height="14" aria-hidden="true">
-      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.06-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 function App() {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState<Category>('Все');
   const [scrolled, setScrolled] = useState(false);
+  const [favorites, setFavorites] = useState<number[]>([]);
+  const [favOpen, setFavOpen] = useState(false);
+  const [cart, setCart] = useState<number[]>([]);
+  const [kbGlow, setKbGlow] = useState(false);
+  const kbImgRef = useRef<HTMLImageElement>(null);
+  const kbCanvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const img = kbImgRef.current;
+    if (!img) return;
+
+    const buildCanvas = () => {
+      const c = document.createElement('canvas');
+      c.width = img.naturalWidth;
+      c.height = img.naturalHeight;
+      c.getContext('2d')?.drawImage(img, 0, 0);
+      kbCanvasRef.current = c;
+    };
+
+    if (img.complete) buildCanvas();
+    else img.addEventListener('load', buildCanvas, { once: true });
+
+    const container = img.parentElement!;
+
+    const onMove = (e: MouseEvent) => {
+      const canvas = kbCanvasRef.current;
+      if (!canvas) return;
+      const rect = img.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) * (img.naturalWidth / rect.width));
+      const y = Math.floor((e.clientY - rect.top) * (img.naturalHeight / rect.height));
+      if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) { setKbGlow(false); return; }
+      const alpha = canvas.getContext('2d')!.getImageData(x, y, 1, 1).data[3];
+      setKbGlow(alpha > 10);
+    };
+
+    const onLeave = () => setKbGlow(false);
+    container.addEventListener('mousemove', onMove);
+    container.addEventListener('mouseleave', onLeave);
+    return () => {
+      container.removeEventListener('mousemove', onMove);
+      container.removeEventListener('mouseleave', onLeave);
+    };
+  }, []);
+
+  const toggleCart = (id: number) => {
+    setCart(prev =>
+      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
+    );
+  };
+  const [toast, setToast] = useState(false);
+
+  const showToast = () => {
+    setToast(true);
+    setTimeout(() => setToast(false), 3000);
+  };
+
+  const toggleFavorite = (id: number) => {
+    setFavorites(prev =>
+      prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
+    );
+  };
+
+  const favoriteProducts = products.filter(p => favorites.includes(p.id));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -87,14 +137,13 @@ function App() {
       {/* ─── Header ─────────────────────────────────────────── */}
       <header className={`header${scrolled ? ' header--scrolled' : ''}`}>
         <a href="/" className="logo">
+          <img src={logoImg} alt="Klavisha" className="logo__img" />
           Klavisha<em>.uz</em>
         </a>
 
         <nav className="header-nav">
           <a href="#catalog" className="header-nav__link">Каталог</a>
-          <a href="#" className="header-nav__link">Кастом сборки</a>
-          <a href="#" className="header-nav__link">О нас</a>
-          <a href="#" className="header-nav__link">Доставка</a>
+          <button className="header-nav__link" onClick={showToast}>Кастомные сборки</button>
         </nav>
 
         <div className="search-wrap">
@@ -109,17 +158,17 @@ function App() {
         </div>
 
         <div className="header-actions">
-          <a href="tel:+998712345678" className="header-phone">
-            <PhoneIcon />
-            <span>+998 71 234-56-78</span>
+          <a href="tel:+998000000000" className="header-phone">
+            <Phone size={14} strokeWidth={1.8} />
+            <span>+998 00 000-00-00</span>
           </a>
-          <button className="header-icon-btn" aria-label="Избранное">
+          <button className="header-icon-btn" aria-label="Избранное" onClick={showToast}>
             <HeartIcon />
           </button>
-          <button className="header-cart-btn" aria-label="Корзина">
-            <CartIcon size={18} />
+          <button className="header-cart-btn" aria-label="Корзина" onClick={showToast}>
+            <ShoppingCart size={18} strokeWidth={1.8} />
             <span>Корзина</span>
-            <span className="cart-badge">0</span>
+            {cart.length > 0 && <span className="cart-badge">{cart.length}</span>}
           </button>
         </div>
       </header>
@@ -134,14 +183,14 @@ function App() {
           <div className="hero__content">
             <span className="hero__tag">
               <span className="hero__tag-dot" />
-              Элитный магазин механических клавиатур · Ташкент
+              Клавиатуры · Ташкент
             </span>
             <h1 className="hero__title">
-              Механика<br />
-              <span className="hero__title-accent">нового уровня</span>
+              звук. тактильность.<br />
+              <span className="hero__title-accent">УНИКАЛЬНОСТЬ.</span>
             </h1>
             <p className="hero__subtitle">
-              Клавиатуры, кейкапы и свитчи от ведущих мировых производителей. <br />
+              Все о клавиатурах от ведущих мировых производителей. <br />
               Кастомные сборки под ваш стиль.
             </p>
             <div className="hero__cta">
@@ -152,7 +201,7 @@ function App() {
                 Смотреть каталог
               </button>
 
-              <BubbleButton>Заказать кастом</BubbleButton>
+              <BubbleButton onClick={showToast}>Заказать кастомную сборку</BubbleButton>
             </div>
           </div>
 
@@ -168,7 +217,7 @@ function App() {
             </div>
             <div className="hero__stat-divider" />
             <div className="hero__stat">
-              <strong>Кастом</strong>
+              <strong>Кастомные сборки</strong>
               <span>под заказ</span>
             </div>
             <div className="hero__stat-divider" />
@@ -177,6 +226,16 @@ function App() {
               <span>1 год</span>
             </div>
           </div>
+        </div>
+
+        <div className="hero__keyboard" aria-hidden="true" onContextMenu={(e) => e.preventDefault()}>
+          <img
+            ref={kbImgRef}
+            src={keyboardImg}
+            alt=""
+            draggable={false}
+            className={kbGlow ? 'kb-glow' : ''}
+          />
         </div>
 
       </section>
@@ -211,7 +270,15 @@ function App() {
             </div>
             <div className="products-grid">
               {filtered.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  isFavorite={favorites.includes(product.id)}
+                  onToggleFavorite={() => toggleFavorite(product.id)}
+                  inCart={cart.includes(product.id)}
+                  onToggleCart={() => toggleCart(product.id)}
+                  onCardClick={showToast}
+                />
               ))}
             </div>
           </>
@@ -232,12 +299,12 @@ function App() {
         <div className="feature">
           <span className="feature__icon">🔩</span>
           <strong>Кастом под заказ</strong>
-          <p>Сборка и смазка свитчей, монтаж кейкапов</p>
+          <p>Сборка кастомных клавиатур под ваш стиль</p>
         </div>
         <div className="feature">
           <span className="feature__icon">🌍</span>
           <strong>Мировые бренды</strong>
-          <p>Keychron, GMK, KBDFans, Gateron, Boba</p>
+          <p>AJAZZ, AULA</p>
         </div>
         <div className="feature">
           <span className="feature__icon">🚚</span>
@@ -265,36 +332,85 @@ function App() {
           </div>
           <div className="footer__col">
             <p className="footer__col-title">Каталог</p>
-            <a href="#">Клавиатуры</a>
-            <a href="#">Кастом сборки</a>
-            <a href="#">Кейкапы</a>
-            <a href="#">Свитчи</a>
-            <a href="#">Аксессуары</a>
+            <span>Клавиатуры</span>
+            <span>Кастом сборки</span>
+            <span>Кейкапы</span>
+            <span>Свитчи</span>
+            <span>Аксессуары</span>
           </div>
           <div className="footer__col">
             <p className="footer__col-title">Покупателям</p>
-            <a href="#">Доставка и оплата</a>
-            <a href="#">Гарантия</a>
-            <a href="#">Возврат</a>
-            <a href="#">Заказ кастома</a>
-            <a href="#">О компании</a>
+            <span>Доставка и оплата</span>
+            <span>Гарантия</span>
+            <span>Возврат</span>
+            <span>Заказ кастома</span>
+            <span>О компании</span>
           </div>
           <div className="footer__col">
             <p className="footer__col-title">Контакты</p>
-            <a href="tel:+998712345678">+998 71 234-56-78</a>
-            <a href="mailto:info@keycraft.uz">info@keycraft.uz</a>
-            <p>Ташкент, ул. Амира Темура, 7</p>
+            <a href="tel:+998000000000">+998 00 000-00-00</a>
+            <a href="mailto:info@klavisha.uz">info@klavisha.uz</a>
+            <p>Ташкент, ул. ----------, ---</p>
             <p>Пн–Сб, 10:00–20:00</p>
           </div>
         </div>
         <div className="footer__bottom">
-          <p>© 2025 KeyCraft.uz — Все права защищены</p>
+          <p>© 2025 Klavisha.uz — Все права защищены</p>
           <div className="footer__bottom-links">
-            <a href="#">Конфиденциальность</a>
-            <a href="#">Оферта</a>
+            <span>Конфиденциальность</span>
+            <span>Оферта</span>
           </div>
         </div>
       </footer>
+
+      {/* ─── Toast ───────────────────────────────────────────── */}
+      <div className={`toast${toast ? ' toast--visible' : ''}`}>
+        🚧 Это только макет — функционал в разработке
+      </div>
+
+      {/* ─── Favorites drawer ────────────────────────────────── */}
+      {favOpen && <div className="fav-overlay" onClick={() => setFavOpen(false)} />}
+      <aside className={`fav-drawer${favOpen ? ' fav-drawer--open' : ''}`}>
+        <div className="fav-drawer__header">
+          <h2 className="fav-drawer__title">Избранное</h2>
+          <button className="fav-drawer__close" onClick={() => setFavOpen(false)} aria-label="Закрыть">
+            <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        {favoriteProducts.length === 0 ? (
+          <div className="fav-drawer__empty">
+            <HeartIcon />
+            <p>Пока ничего нет</p>
+            <span>Нажмите ♥ на товаре, чтобы сохранить</span>
+          </div>
+        ) : (
+          <ul className="fav-drawer__list">
+            {favoriteProducts.map(p => (
+              <li key={p.id} className="fav-item">
+                <div className="fav-item__img">
+                  <img src={p.image} alt={p.name} />
+                </div>
+                <div className="fav-item__info">
+                  <p className="fav-item__name">{p.name}</p>
+                  <p className="fav-item__price">{p.price.toLocaleString('ru-RU')} сум</p>
+                </div>
+                <button
+                  className="fav-item__remove"
+                  onClick={() => toggleFavorite(p.id)}
+                  aria-label="Удалить из избранного"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </aside>
     </div>
   );
 }

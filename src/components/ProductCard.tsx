@@ -1,8 +1,13 @@
-import { Flame } from 'lucide-react';
+import { Flame, ShoppingCart, Heart } from 'lucide-react';
 import type { Product } from '../data/products';
 
 interface ProductCardProps {
   product: Product;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
+  inCart: boolean;
+  onToggleCart: () => void;
+  onCardClick: () => void;
 }
 
 function formatPrice(price: number): string {
@@ -15,32 +20,15 @@ function discountPercent(price: number, original: number): number {
 
 
 
-function CartIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" width="15" height="15" aria-hidden="true">
-      <path d="M1 1h3l2 9h9l2-7H5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="8" cy="17" r="1.2" fill="currentColor" />
-      <circle cx="15" cy="17" r="1.2" fill="currentColor" />
-    </svg>
-  );
-}
 
-function HeartIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" width="17" height="17" aria-hidden="true">
-      <path d="M10 17s-7-4.35-7-9a4 4 0 018 0 4 4 0 018 0c0 4.65-7 9-7 9z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-export function ProductCard({ product }: ProductCardProps) {
-  const { name, description, price, originalPrice, rating, reviews, inStock, tag } = product;
+export function ProductCard({ product, isFavorite, onToggleFavorite, inCart, onToggleCart, onCardClick }: ProductCardProps) {
+  const { name, description, price, originalPrice, image, inStock, tag } = product;
   const discount = originalPrice ? discountPercent(price, originalPrice) : null;
 
   return (
-    <article className="product-card">
+    <article className="product-card" onClick={onCardClick} style={{ cursor: 'pointer' }}>
       <div className="product-card__image-wrap">
-        <div className="product-card__gradient" />
+        <img className="product-card__img" src={image} alt={name} />
 
         {tag === 'hot' && (
           <span className="product-card__badge-hot">
@@ -53,8 +41,12 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="product-card__sold-out">Нет в наличии</div>
         )}
 
-        <button className="product-card__wish" aria-label="В избранное">
-          <HeartIcon />
+        <button
+          className={`product-card__wish${isFavorite ? ' product-card__wish--active' : ''}`}
+          aria-label={isFavorite ? 'Убрать из избранного' : 'В избранное'}
+          onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
+        >
+          <Heart size={16} strokeWidth={1.8} fill={isFavorite ? 'currentColor' : 'none'} />
         </button>
       </div>
 
@@ -75,11 +67,12 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
           </div>
           <button
-            className="product-card__cart-btn"
-            aria-label="В корзину"
+            className={`product-card__cart-btn${inCart ? ' product-card__cart-btn--active' : ''}`}
+            aria-label={inCart ? 'Убрать из корзины' : 'В корзину'}
             disabled={!inStock}
+            onClick={(e) => { e.stopPropagation(); onToggleCart(); }}
           >
-            <CartIcon />
+            <ShoppingCart size={15} strokeWidth={1.8} />
           </button>
         </div>
       </div>
