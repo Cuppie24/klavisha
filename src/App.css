@@ -355,6 +355,9 @@
 .hero--centered .hero__content {
   align-items: center;
 }
+.hero--centered .hero__title {
+  text-align: center;
+}
 .hero--centered .hero__subtitle {
   text-align: center;
 }
