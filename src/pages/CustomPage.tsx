@@ -84,7 +84,7 @@ export function CustomPage() {
               звук. тактильность.<br />
               <span className="hero__title-accent">УНИКАЛЬНОСТЬ.</span>
             </h1>
-            <p className="hero__subtitle">
+            <p className="hero__subtitle" style={{ textAlign: 'center' }}>
               Все о клавиатурах от ведущих мировых производителей. <br />
               Кастомные сборки под ваш стиль.
             </p>

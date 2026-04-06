@@ -343,17 +343,15 @@
 }
 
 .hero--centered {
-  padding-right: max(24px, calc((100vw - 1400px) / 2 + 40px));
-  justify-content: center;
+  padding: 100px max(24px, calc((100vw - 1400px) / 2 + 40px)) 80px max(24px, calc((100vw - 1400px) / 2 + 40px));
+  display: block;
 }
 .hero--centered .hero__inner {
   max-width: 760px;
+  width: 100%;
   padding-right: 0;
+  margin: 0 auto;
   text-align: center;
-  align-items: center;
-}
-.hero--centered .hero__content {
-  align-items: center;
 }
 .hero--centered .hero__title {
   text-align: center;
@@ -369,7 +367,7 @@
 }
 @media (max-width: 1024px) {
   .hero--centered {
-    align-items: center;
+    padding: 70px 20px 60px;
   }
 }
 
