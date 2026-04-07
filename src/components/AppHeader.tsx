@@ -30,7 +30,7 @@ interface AppHeaderProps {
 export function AppHeader({ scrolled, query, setQuery, cart, showToast }: AppHeaderProps) {
   return (
     <header className={`header${scrolled ? ' header--scrolled' : ''}`}>
-      <Link to="/" className="logo">
+      <Link to="/custom" className="logo">
         <img src={logoImg} alt="Klavisha" className="logo__img" />
         Klavisha<em>.uz</em>
       </Link>

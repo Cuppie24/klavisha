@@ -797,7 +797,7 @@
 
   @media (max-width: 1200px) { grid-template-columns: repeat(3, 1fr); }
   @media (max-width: 800px)  { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  @media (max-width: 420px)  { grid-template-columns: 1fr; }
+  @media (max-width: 420px)  { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 }
 
 /* ─── Product card ───────────────────────────────────────── */
