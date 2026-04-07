@@ -365,8 +365,21 @@
 .hero--centered .hero__cta {
   justify-content: center;
 }
+.hero--centered .hero__cta .bubble-btn {
+  margin-left: 0;
+}
 .hero--centered .hero__stats {
   justify-content: center;
+}
+.hero--centered .hero__stat {
+  padding-right: 0;
+  padding-left: 0;
+  text-align: center;
+}
+.hero--centered .hero__stat-divider {
+  margin-right: 0;
+  margin-left: 0;
+  margin: 0 16px;
 }
 @media (max-width: 1024px) {
   .hero--centered {
