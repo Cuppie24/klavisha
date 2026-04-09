@@ -30,14 +30,14 @@ interface AppHeaderProps {
 export function AppHeader({ scrolled, query, setQuery, cart, showToast }: AppHeaderProps) {
   return (
     <header className={`header${scrolled ? ' header--scrolled' : ''}`}>
-      <Link to="/custom" className="logo">
+      <Link to="/" className="logo">
         <img src={logoImg} alt="Klavisha" className="logo__img" />
         Klavisha<em>.uz</em>
       </Link>
 
       <nav className="header-nav">
-        <a href="#catalog" className="header-nav__link">Каталог</a>
-        <Link to="/custom" className="header-nav__link">Кастомные сборки</Link>
+        <Link to="/catalog" className="header-nav__link">Каталог</Link>
+        <Link to="/" className="header-nav__link">Кастомные сборки</Link>
       </nav>
 
       <div className="search-wrap">

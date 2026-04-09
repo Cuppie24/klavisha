@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
-import { CustomPage } from './pages/CustomPage';
+import { CatalogPage } from './pages/CatalogPage';
 import './App.css';
 
 export default function App() {
@@ -8,7 +8,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/custom" element={<CustomPage />} />
+        <Route path="/catalog" element={<CatalogPage />} />
       </Routes>
     </BrowserRouter>
   );
